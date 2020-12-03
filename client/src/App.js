@@ -10,6 +10,13 @@ import PostsListPage from './pages/PostsListPage';
 import PostFormPage from './pages/PostFormPage';
 import ShowPostPage from './pages/ShowPostPage';
 import AboutUsPage from './pages/AboutUsPage';
+import SigninPage from './pages/SigninPage';
+import Dashboard from './pages/Dashboard';
+// import GoogleBtn from './components/GoogleBtn';
+import PrivateRoute from './components/PrivateRoute';
+// import AuthButton from './components/AuthButton';
+// import LoginPage from './pages/LoginPage';
+
 
 import './App.css';
 
@@ -29,13 +36,32 @@ function Navigation(props) {
             About Us
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/sign-in">
+            Sign In
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/dashboard">
+            Dashboard
+          </NavLink> 
+         </li>
+         <li className="nav-item">
+         {/* <AuthButton /> */}
+         </li>
+         
       </ul>
+          {/* <GoogleBtn/> */}
     </nav>
   );
 }
 
 
+
+
+
 class App extends React.Component {
+
   render() {
     return (
         <Router>
@@ -43,11 +69,17 @@ class App extends React.Component {
           <div className="container-fluid text-center">
             <div className="row justify-content-center">
               <Switch>
-                <Route path="/posts/new" component={PostFormPage} />
+              <PrivateRoute path="/posts/" component={PostFormPage} />
                 <Route path="/posts/:id" component={ShowPostPage} />
                 <Route path="/about-us" component={AboutUsPage} />
-                <Route path="/" component={PostsListPage} />
+                <Route exact path="/" component={PostsListPage} />
+                <Route path="/sign-in" component={SigninPage}/>
+                <Route path='/dashboard' component={Dashboard}/>
+                {/* <Route path="/login" component={SigninPage} /> */}
+                
+              
               </Switch>
+             
             </div>
           </div>
         </Router>
