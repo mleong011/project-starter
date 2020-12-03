@@ -1,17 +1,11 @@
-
-const bcrypt = require('bcryptjs');
 const passport = require('passport');
 //const passportGoogle = require('passport-google-oauth');
-const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models').User;
 const keys= require('./keys');
 const router = require('express').Router();
+const fs = require('fs');
 
-//const GoogleStrategy = passportGoogle.OAuth2Strategy
-// function passwordsMatch(submittedPassword, storedPasswordHash) {
-//   return bcrypt.compareSync(submittedPassword, storedPasswordHash);
-// }
 
 passport.use(
   new GoogleStrategy({
@@ -19,16 +13,22 @@ passport.use(
     callbackURL: 'auth/google/callback',
     clientID: keys.google.clientID,
     clientSecret: keys.google.clientSecret
-  }, (accessToken, refreshToken, profile, done)=>{
-    console.log("access token", accessToken)
-    console.log("refresh token", refreshToken)
-    console.log("profile", profile)
-    console.log("done", done)
-    //passport callback function
+  }, (accessToken, refreshToken, otherTokenDetails, user, done)=>{
+    //in here you can access all token details to given API scope
+        //and i have created file from that details
+    let tokens = {
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      scope: otherTokenDetails.scope,
+      token_type: otherTokenDetails.token_type,
+      expiry_date:otherTokenDetails.expires_in
+  };
+  let data = JSON.stringify(tokens);
+  fs.writeFileSync('./tokens.json', data);
 
     // passport callback function
       //check if user already exists in our db with the given profile ID
-      User.findOne({email: profile.email})
+      User.findOne({where: {email: user.email}})
       .then((currentUser)=>{
         if(currentUser){
           //if we already have a record with the given profile ID
@@ -36,7 +36,7 @@ passport.use(
         } else{
              //if not, create a new user 
             new User({
-              email: profile.email,
+              email: user.email,
             }).save().then((newUser) =>{
               done(null, newUser);
             });
@@ -49,7 +49,7 @@ passport.use(
 
 //after user logs in we save info in a cookie. done expects the user id
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.email);
 });
 
 //future connections

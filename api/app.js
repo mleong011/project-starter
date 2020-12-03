@@ -9,28 +9,10 @@ const passport= require('./middlewares/authentication');
 const PORT = process.env.PORT || 8000;
 
 
-//start of google addin
-// const Token = require('./token')
-// const google = require('googleapis')
-// const clientId = process.env.CLIENT_ID
-// const clientSecret = process.env.CLIENT_SECRET
-// const redirectUrl = process.env.DOMAIN_URL + '/create'
-// const oauth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUrl)
-// const authConfig = {
-//   access_type: 'offline',
-//   scope: [
-//     'https://www.googleapis.com/auth/plus.me',
-//     'https://www.googleapis.com/auth/calendar',
-//     'https://www.googleapis.com/auth/gmail.modify'
-//   ],
-//   approval_prompt : 'force'
-// }
-//end of google add ins
-
 // this lets us parse 'application/json' content in http requests
 app.use(bodyParser.json())
 
-// setup passport and session cookies
+// setup passport and session cookies -give secrect and initalize passport
 app.use(expressSession({ 
   secret: process.env.SESSION_SECRET, 
   resave: false,

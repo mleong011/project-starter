@@ -17,10 +17,10 @@ const { Post } = db;
 // TODO: Can you spot where we have some duplication below?
 
 
-// router.get('/', (req,res) => {
-//   Post.findAll({})
-//     .then(posts => res.json(posts));
-// });
+router.get('/', (req,res) => {
+  Post.findAll({})
+    .then(posts => res.json(posts));
+});
 
 
 router.post('/', passport.isAuthenticated(), (req, res) => {

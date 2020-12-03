@@ -26,17 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     
 
-  // passwordHash: { type: DataTypes.STRING },
-  //   password: { 
-  //     type: DataTypes.VIRTUAL,
-  //     validate: {
-  //       isLongEnough: (val) => {
-  //         if (val.length < 7) {
-  //           throw new Error("Please choose a longer password");
-  //         }
-  //       },
-  //     },
-  //   },
   }, 
   {
     sequelize,

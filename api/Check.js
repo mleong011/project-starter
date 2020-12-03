@@ -8,7 +8,7 @@ class Check{
 
     //auth is the constructor parameter.
     constructor(auth){
-        this.me = 'me';
+        this.me = "102201229648850837598";
         this.gmail = google.gmail({version: 'v1', auth});
         this.auth = auth;
     }
@@ -22,7 +22,7 @@ class Check{
                 console.log(res.data);
             }
             else{
-                console.log("error check inbox: " + err);
+                console.log("error check inbox: " +err);
             }
         })
     }
@@ -42,12 +42,12 @@ class Check{
                 let mails = res.data.messages;
 
                 //We call the getMail function passing the id of first mail as parameter.
-                 this.getMail('175d27ed2510289b');
-                // console.log(mails[2].id);
-                // mails.forEach(message => {
-                //     // console.log(message.id);
-                //     this.getMail(message.id);
-                // });
+                //  this.getMail('175d27ed2510289b');
+                console.log(mails[2].id);
+                mails.forEach(message => {
+                    // console.log(message.id);
+                    this.getMail(message.id);
+                });
             }
             else{
                 console.log("error 1 : " + err);
