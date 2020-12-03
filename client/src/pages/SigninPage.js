@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import {GoogleLogin, GoogleLogout} from 'react-google-login';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 import auth from '../services/auth';
 
 const CLIENT_ID =
   "158674415075-1r58o2988bebvq9vjitmgbqtj4udralh.apps.googleusercontent.com";
 
-export class SigninPage extends Component {
+// const authButton = withRouter(({history})=> {
+//   if(!auth.isAuthenticated){
+//     return <Link to="/login"> Login </Link>;
+//   }
+//   const logout = () => {
+//     auth.signout().then(() => history.push('/'));
+//   }
+// })
+
+  export class SigninPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +47,7 @@ export class SigninPage extends Component {
 
 
   login = (response) => {
-    //response.preventDefault();
+    response.preventDefault();
     let { email, name, accessToken } = this.state;
     auth.authenticate(email, name, accessToken)
       .then((user) => {
@@ -77,13 +86,18 @@ export class SigninPage extends Component {
       console.log("res is:", res);
      this.login(response);
     }
-    // if(this.state.isLogined) return <Redirect to="/" />;
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { redirectToReferrer, failed } = this.state;
+
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
 
     return(
       <div className="App">
         <div className="row">
           <div className= "col-sm-12 btn-info">
-            Login With Google to Begin
+            
           </div>
         </div>
         <div className="row">
@@ -117,7 +131,7 @@ export class SigninPage extends Component {
               {this.state.accessToken}
               
             </h5>
-          ) : null}
+          ) : <div>Login to Begin </div>}
           <br />
           {this.state.isLogined ? (
             <h5>

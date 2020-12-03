@@ -6,7 +6,7 @@
 // of using callbacks `cb`.
 
 const auth = {
-    isAuthenticated: false,
+    isAuthenticated: false, 
     authenticate(email, name, accessToken) {
       return fetch('/api/auth/login', { 
         method: 'POST', //calls api
@@ -46,6 +46,8 @@ const auth = {
           return body;
         });
     }
+
+    
   }
   
   export default auth;
