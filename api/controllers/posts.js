@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 const db = require('../models');
 const { Post } = db;
@@ -16,13 +17,13 @@ const { Post } = db;
 // TODO: Can you spot where we have some duplication below?
 
 
-router.get('/', (req,res) => {
-  Post.findAll({})
-    .then(posts => res.json(posts));
-});
+// router.get('/', (req,res) => {
+//   Post.findAll({})
+//     .then(posts => res.json(posts));
+// });
 
 
-router.post('/', (req, res) => {
+router.post('/', passport.isAuthenticated(), (req, res) => {
   let { content } = req.body;
   
   Post.create({ content })
@@ -48,7 +49,7 @@ router.get('/:id', (req, res) => {
 });
 
 
-router.put('/:id', (req, res) => {
+router.put('/:id', passport.isAuthenticated(), (req, res) => {
   const { id } = req.params;
   Post.findByPk(id)
     .then(post => {
@@ -68,7 +69,7 @@ router.put('/:id', (req, res) => {
 });
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', passport.isAuthenticated(), (req, res) => {
   const { id } = req.params;
   Post.findByPk(id)
     .then(post => {
